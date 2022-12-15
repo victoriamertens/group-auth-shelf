@@ -58,17 +58,22 @@ router.post('/', rejectUnauthenticated, (req, res) => {
 router.delete('/:id', (req, res) => {
   // Only an user with matching id to item can delete the item.
   // use req.user.id & req.param.id
-  let queryText = `DELETE FROM "item" Where user_id = $1;`
-  pool.query(queryText, [req.user.id])
-  .then(result => {
-    // send result.rows to requesting site
-    console.log('results of /shelf Get Route',result.rows);
-    res.send(result.rows);
-  })
-  .catch(error => {
-    console.log(error);
-    res.sendStatus(500);
-  })
+  console.log('router.delete(/:id,');
+  // if(req.isAuthenticated()){
+    let queryText = `DELETE FROM "item" Where user_id = $1 && id = $2;`
+    pool.query(queryText, [req.user.id, req.params.id])
+    .then(result => {
+      // send result.rows to requesting site
+      console.log('results of /shelf Get Route',result.rows);
+      res.send(result.rows);
+    })
+    .catch(error => {
+      console.log(error);
+      res.sendStatus(500);
+    })
+  // } else {
+  //   res.sendStatus(403);
+  // }  // endpoint functionality
   // endpoint functionality
 });
 
@@ -76,7 +81,27 @@ router.delete('/:id', (req, res) => {
  * Update an item if it's something the logged in user added
  */
 router.put('/:id', (req, res) => {
-  // endpoint functionality
+
+  console.log('in /api/shelf/:id update');
+  
+  // if(req.isAuthenticated()){
+
+  let queryText = `UPDATE "item" 
+                    SET description = $1, image_url = $2
+                    Where id = $3 & user_id = $4;`
+    pool.query(queryText, [req.body.description, req.body.image_url, req.params.id, req.user.id] )
+    .then(result => {
+      // send result.rows to requesting site
+      console.log('results of /shelf/count Route',result.rows);
+      res.send(result.rows);
+    })
+    .catch(error => {
+      console.log(error);
+      res.sendStatus(500);
+    })
+  // } else {
+  //   res.sendStatus(403);
+  // }  // endpoint functionality
 });
 
 /**
@@ -87,15 +112,62 @@ router.get('/count', (req, res) => {
   // endpoint functionality
   // returns total number of items in shelf
   //Select * shelf and count(something);
+  console.log('in /api/shelf/count -> returns {count: #}');
+  let queryText = `SELECT COUNT(id) FROM "item";`;
+
+  pool.query(queryText)
+  .then(result => {
+    // send result.rows to requesting site
+    console.log('results of /shelf/count Route',result.rows);
+    res.send(result.rows);
+  })
+  .catch(error => {
+    console.log(error);
+    res.sendStatus(500);
+  })
 });
 
 /**
  * Return a specific item by id
  */
 router.get('/:id', (req, res) => {
-  // select * shelved item where id = req.user.id
+  // select * shelved item where id = $1
 
-  // endpoint functionality
+    let queryText = `Select * FROM "item" WHERE id = $1`
+
+    pool.query(queryText, [req.params.id])
+    .then(result => {
+      // send result.rows to requesting site
+      console.log('results of /shelf Get Route',result.rows);
+      res.send(result.rows);
+
+    })
+    .catch(error => {
+      console.log(error);
+      res.sendStatus(500);
+    })
 });
+
+router.get('/userId', (req, res) => {
+    // get user's personal shelf => [{id: #, description: 'string', image_url: 'url', user_id: #}, {...}, {...}, ...]
+    console.log('/shelf GET route');
+    // if(req.isAuthenticated()){
+      let queryText = `SELECT * FROM "item" WHERE user_id = $1;`
+    
+      pool.query(queryText, [req.user.id])
+      .then(result => {
+        // send result.rows to requesting site
+        console.log('results of /shelf/userId Get Route',result.rows);
+        res.send(result.rows);
+    
+      })
+      .catch(error => {
+        console.log(error);
+        res.sendStatus(500);
+      })
+    // } else {
+    //   res.sendStatus(403);
+    // }  // endpoint functionality
+})
 
 module.exports = router;
