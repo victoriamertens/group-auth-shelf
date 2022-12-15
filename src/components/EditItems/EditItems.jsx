@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import ShelfItem from '../ShelfItem/ShelfItem';
 import { useHistory } from 'react-router-dom';
 
-function ShelfPage() {
+function EditItems() {
   const dispatch = useDispatch();
   const history = useHistory();
 
@@ -29,12 +29,11 @@ function ShelfPage() {
 
   return (
     <div className="container">
-      <h2>Shelf</h2>
-      <ShelfForm />
-      <button onClick={myItemsPage}>Edit My Items</button>
+      <h2>My Shelf Items</h2>
+
       <div>
         {shelf.map((item) => {
-          return <ShelfItem key={item.id} item={item} />;
+          return <ShelfItem key={item.id} item={item} delete />;
         })}
       </div>
       <p>All of the available items can be seen here.</p>
@@ -42,4 +41,4 @@ function ShelfPage() {
   );
 }
 
-export default ShelfPage;
+export default EditItems;

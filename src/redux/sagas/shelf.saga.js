@@ -17,6 +17,7 @@ function* postShelfItem(action) {
 
 // deletes item by req.params.id
 function* deleteShelfItem(action) {
+  console.log('PAYLOAD:', action.payload.id);
   yield axios.delete('/api/shelf/' + action.payload.id);
   //refreshes shelf
   yield put({ type: 'GET_SHELF' });
