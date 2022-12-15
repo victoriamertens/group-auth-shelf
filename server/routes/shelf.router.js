@@ -6,8 +6,24 @@ const {rejectUnauthenticated} = require('../modules/authentication-middleware')
 // Get all shelved items
 router.get('/', (req, res) => {
   // get [{id: #, description: 'string', image_url: 'url', user_id: #}, {...}, {...}, ...]
+  console.log('/shelf GET route');
+  // if(req.isAuthenticated()){
+  let queryText = `SELECT * FROM "item";`
 
-  res.sendStatus(200); // For testing only, can be removed
+  pool.query(queryText)
+  .then(result => {
+    // send result.rows to requesting site
+    console.log('results of /shelf Get Route',result.rows);
+    res.send(result.rows);
+
+  })
+  .catch(error => {
+    console.log(error);
+    res.sendStatus(500);
+  })
+  // } else {
+  //   res.sendStatus(403);
+  // }
 });
 
 /**
@@ -42,8 +58,17 @@ router.post('/', rejectUnauthenticated, (req, res) => {
 router.delete('/:id', (req, res) => {
   // Only an user with matching id to item can delete the item.
   // use req.user.id & req.param.id
-
-
+  let queryText = `DELETE FROM "item" Where user_id = $1;`
+  pool.query(queryText, [req.user.id])
+  .then(result => {
+    // send result.rows to requesting site
+    console.log('results of /shelf Get Route',result.rows);
+    res.send(result.rows);
+  })
+  .catch(error => {
+    console.log(error);
+    res.sendStatus(500);
+  })
   // endpoint functionality
 });
 
