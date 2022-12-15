@@ -3,7 +3,8 @@ import axios from 'axios';
 
 function* getShelfItems() {
   const shelfItems = yield axios.get('/api/shelf');
-  yield put({ type: 'SET-SHELF', payload: shelfItems });
+  console.log('shelf.saga', shelfItems.data)
+  yield put({ type: 'SET_SHELF', payload: shelfItems.data });
 }
 
 function* addShelfItem(action) {
