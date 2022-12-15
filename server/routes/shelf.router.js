@@ -2,10 +2,10 @@ const express = require('express');
 const pool = require('../modules/pool');
 const router = express.Router();
 
-/**
- * Get all of the items on the shelf
- */
+// Get all shelved items
 router.get('/', (req, res) => {
+  // get [{id: #, description: 'string', image_url: 'url', user_id: #}, {...}, {...}, ...]
+
   res.sendStatus(200); // For testing only, can be removed
 });
 
@@ -13,6 +13,8 @@ router.get('/', (req, res) => {
  * Add an item for the logged in user to the shelf
  */
 router.post('/', (req, res) => {
+  // receive object of {id: #, description: 'string', image_url: 'url', user_id: #}
+
   // endpoint functionality
 });
 
@@ -20,6 +22,10 @@ router.post('/', (req, res) => {
  * Delete an item if it's something the logged in user added
  */
 router.delete('/:id', (req, res) => {
+  // Only an user with matching id to item can delete the item.
+  // use req.user.id & req.param.id
+
+
   // endpoint functionality
 });
 
@@ -36,12 +42,16 @@ router.put('/:id', (req, res) => {
  */
 router.get('/count', (req, res) => {
   // endpoint functionality
+  // returns total number of items in shelf
+  //Select * shelf and count(something);
 });
 
 /**
  * Return a specific item by id
  */
 router.get('/:id', (req, res) => {
+  // select * shelved item where id = req.user.id
+
   // endpoint functionality
 });
 
