@@ -4,7 +4,7 @@ const router = express.Router();
 const {rejectUnauthenticated} = require('../modules/authentication-middleware')
 
 // Get all shelved items
-router.get('/', (req, res) => {
+router.get('/', rejectUnauthenticated, (req, res) => {
   // get [{id: #, description: 'string', image_url: 'url', user_id: #}, {...}, {...}, ...]
   console.log('/shelf GET route');
   // if(req.isAuthenticated()){
@@ -55,7 +55,7 @@ router.post('/', rejectUnauthenticated, (req, res) => {
 /**
  * Delete an item if it's something the logged in user added
  */
-router.delete('/:id', (req, res) => {
+router.delete('/:id', rejectUnauthenticated, (req, res) => {
   // Only an user with matching id to item can delete the item.
   // use req.user.id & req.param.id
   console.log('router.delete(/:id,');
@@ -80,7 +80,7 @@ router.delete('/:id', (req, res) => {
 /**
  * Update an item if it's something the logged in user added
  */
-router.put('/:id', (req, res) => {
+router.put('/:id', rejectUnauthenticated, (req, res) => {
 
   console.log('in /api/shelf/:id update');
   
@@ -108,7 +108,7 @@ router.put('/:id', (req, res) => {
  * Return all users along with the total number of items
  * they have added to the shelf
  */
-router.get('/count', (req, res) => {
+router.get('/count', rejectUnauthenticated, (req, res) => {
   // endpoint functionality
   // returns total number of items in shelf
   //Select * shelf and count(something);
@@ -130,7 +130,7 @@ router.get('/count', (req, res) => {
 /**
  * Return a specific item by id
  */
-router.get('/:id', (req, res) => {
+router.get('/:id', rejectUnauthenticated, (req, res) => {
   // select * shelved item where id = $1
 
     let queryText = `Select * FROM "item" WHERE id = $1`
@@ -148,7 +148,7 @@ router.get('/:id', (req, res) => {
     })
 });
 
-router.get('/userId', (req, res) => {
+router.get('/userId', rejectUnauthenticated, (req, res) => {
     // get user's personal shelf => [{id: #, description: 'string', image_url: 'url', user_id: #}, {...}, {...}, ...]
     console.log('/shelf GET route');
     // if(req.isAuthenticated()){

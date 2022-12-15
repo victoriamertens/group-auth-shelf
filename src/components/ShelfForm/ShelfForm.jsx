@@ -19,7 +19,6 @@ function ShelfForm() {
         <input
           onChange={(event) => {
             setDescription(event.target.value);
-            console.log(description);
           }}
           type="text"
           placeholder="Description"
