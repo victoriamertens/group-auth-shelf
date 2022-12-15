@@ -10,22 +10,23 @@ function* getShelfItems() {
 // calls post route and send payload to route
 function* postShelfItem(action) {
   yield axios.post('/api/shelf', action.payload);
+  console.log('LOOK HERE:', action.payload);
   //refreshes shelf
-  put({ type: 'GET_SHELF' });
+  yield put({ type: 'GET_SHELF' });
 }
 
 // deletes item by req.params.id
 function* deleteShelfItem(action) {
   yield axios.delete('/api/shelf/' + action.payload.id);
   //refreshes shelf
-  put({ type: 'GET_SHELF' });
+  yield put({ type: 'GET_SHELF' });
 }
 
 function* updateItem(action) {
   // req.params.id = id & all other updates will be in req.body
   yield axios.put('/api/shelf/' + action.payload.id, action.payload);
   //refreshes shelf
-  put({ type: 'GET_SHELF' });
+  yield put({ type: 'GET_SHELF' });
 }
 
 function* countItems(action) {

@@ -9,7 +9,7 @@ function ShelfForm() {
   function addItem() {
     event.preventDefault();
     console.log('in add item');
-    dispatch({ type: 'ADD_SHELF_ITEM', payload: { description, image_url } });
+    dispatch({ type: 'POST_ITEM', payload: { description, image_url } });
     setDescription('');
     setImage_Url('');
   }
