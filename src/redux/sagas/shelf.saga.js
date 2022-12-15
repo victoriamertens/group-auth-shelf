@@ -3,42 +3,42 @@ import axios from 'axios';
 
 function* getShelfItems() {
   const shelfItems = yield axios.get('/api/shelf');
-  console.log('shelf.saga', shelfItems.data)
+  console.log('shelf.saga', shelfItems.data);
   yield put({ type: 'SET_SHELF', payload: shelfItems.data });
 }
 
 // calls post route and send payload to route
-function* postShelfItem(action){
+function* postShelfItem(action) {
   yield axios.post('/api/shelf', action.payload);
   //refreshes shelf
-  put({type: 'GET_SHELF'});
+  put({ type: 'GET_SHELF' });
 }
 
 // deletes item by req.params.id
-function* deleteShelfItem(action){
-  yield axios.delete('/api/shelf/'+action.payload.id);
+function* deleteShelfItem(action) {
+  yield axios.delete('/api/shelf/' + action.payload.id);
   //refreshes shelf
-  put({type: 'GET_SHELF'});
+  put({ type: 'GET_SHELF' });
 }
 
-function* updateItem(action){
+function* updateItem(action) {
   // req.params.id = id & all other updates will be in req.body
-  yield axios.put('/api/shelf/'+action.payload.id, action.payload);
-    //refreshes shelf
-  put({type: 'GET_SHELF'});
+  yield axios.put('/api/shelf/' + action.payload.id, action.payload);
+  //refreshes shelf
+  put({ type: 'GET_SHELF' });
 }
 
-function* countItems(action){
+function* countItems(action) {
   const count = yield axios.get('/api/shelf/count');
-  console.log('Count needs a store!!!:',count);
+  console.log('Count needs a store!!!:', count);
 }
 
-function* getAnItem(action){
-  const item = axios.get('/api/shelf/'+action.payload.id);
-  yield put({ type: 'SET-SHELF', payload: item});
+function* getAnItem(action) {
+  const item = axios.get('/api/shelf/' + action.payload.id);
+  yield put({ type: 'SET-SHELF', payload: item });
 }
 
-function* getMyShelf(action){
+function* getMyShelf(action) {
   const myShelfItems = yield axios.get('/api/shelf/userId');
   yield put({ type: 'SET-SHELF', payload: myShelfItems });
 }
